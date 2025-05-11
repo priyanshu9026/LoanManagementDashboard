@@ -4,12 +4,13 @@ import { Outlet } from "react-router-dom";
 import SidebarData from "../SidebarData";
 
 const MainLayouts = () => {
-  
   return (
-    <div className="flex flex-row">
-      <SidebarData />
+    <div className="flex flex-col md:flex-row">
+      <div className="w-full md:w-auto">
+        <SidebarData />
+      </div>
       <main className="flex-1 p-4">
-      <Dashboard />
+        <Dashboard />
       </main>
     </div>
   );
