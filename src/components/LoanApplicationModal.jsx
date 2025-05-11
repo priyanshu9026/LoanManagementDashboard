@@ -1,8 +1,38 @@
 // LoanApplicationModal.jsx
-import React from 'react';
+import React, { useState } from 'react';
+import axios from 'axios';
+
 
 const LoanApplicationModal = ({ onClose }) => {
+  const [formData, setFormData] = useState({
+    fullName: '',
+    amount: '',
+    tenure: '',
+    employmentStatus: '',
+    reason: '',
+    address: ''
+  });
+
+  const handleChange = (e) => {
+    setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const res = await axios.post('http://localhost:5000/api/loans/apply', formData);
+      alert('✅ Loan Applied Successfully!');
+      console.log(res.data);
+    } catch (error) {
+      alert('❌ Failed to Apply');
+      console.error(error);
+    }
+  };
   return (
+        <form onSubmit={handleSubmit} className="max-w-3xl mx-auto p-4 bg-white shadow-md rounded">
+
+
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
       <div className="bg-white w-full max-w-4xl p-10 rounded-lg relative shadow-lg">
         <h2 className="text-2xl font-bold text-center mb-6">APPLY FOR A LOAN</h2>
@@ -12,43 +42,43 @@ const LoanApplicationModal = ({ onClose }) => {
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Full name as it appears on bank account
             </label>
-            <input placeholder="Full name as it appears on bank account" className="border p-2 rounded w-full" />
+            <input onChange={handleChange}  placeholder="Full name as it appears on bank account" className="border p-2 rounded w-full" />
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               How much do you need?
             </label>
-            <input placeholder="How much do you need?" className="border p-2 rounded w-full" />
+            <input onChange={handleChange} name="amount" placeholder="How much do you need?" className="border p-2 rounded w-full" />
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Loan tenure (in months)
             </label>
-            <input placeholder="Loan tenure (in months)" className="border p-2 rounded w-full" />
+            <input onChange={handleChange} name="tenure" placeholder="Loan tenure (in months)" className="border p-2 rounded w-full" />
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Employment status
             </label>
-            <input placeholder="Employment status" className="border p-2 rounded w-full" />
+            <input onChange={handleChange} name="employmentStatus" placeholder="Employment status" className="border p-2 rounded w-full" />
           </div>
           <div className="col-span-2">
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Reason for loan
             </label>
-            <textarea placeholder="Reason for loan" className="border p-2 rounded w-full" />
+            <textarea onChange={handleChange} name="reason" placeholder="Reason for loan" className="border p-2 rounded w-full" />
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Employment address
             </label>
-            <input placeholder="Employment address" className="border p-2 rounded w-full" />
+            <input onChange={handleChange} name="address" placeholder="Employment address" className="border p-2 rounded w-full" />
           </div>
           <div className="col-span-2">
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Employment address
             </label>
-            <input placeholder="Employment address" className="border p-2 rounded w-full" />
+            <input onChange={handleChange} name="address" placeholder="Employment address" className="border p-2 rounded w-full" />
           </div>
         </div>
 
@@ -69,11 +99,12 @@ const LoanApplicationModal = ({ onClose }) => {
         </div>
 
         <div className="text-center">
-          <button className="bg-green-700 text-white px-6 py-2 rounded">Submit</button>
+          <button type='submit' className="bg-green-700 text-white px-6 py-2 rounded">Submit</button>
           <button onClick={onClose} className="ml-4 text-red-500 font-semibold">Cancel</button>
         </div>
       </div>
     </div>
+        </form>
   );
 };
 
